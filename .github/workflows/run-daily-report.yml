@@ -1,0 +1,27 @@
+# 워크플로우(자동화 작업)의 이름입니다.
+name: Run Daily Stock Report Automation
+
+# 이 자동화 작업을 언제 실행할지 정하는 조건입니다.
+on:
+  schedule:
+    # crontab 문법을 사용해 실행 시간을 지정합니다. (UTC 기준)
+    # 아래 '0 0 * * *'는 UTC 기준 자정, 즉 한국 시간(KST)으로 매일 아침 9시를 의미합니다.
+    # 만약 한국 시간 아침 8시에 실행하고 싶다면 '23 * * * *' (전날 23시 UTC)로 변경하세요.
+    - cron: '2 3 * * *'
+  
+  # 수동으로도 실행할 수 있도록 버튼을 추가합니다. (선택 사항)
+  workflow_dispatch:
+
+# 실제로 실행될 작업들의 목록입니다.
+jobs:
+  # 'run-colab-notebook' 이라는 이름의 작업을 만듭니다.
+  run-colab-notebook:
+    # 이 작업은 우분투(리눅스) 최신 버전 환경에서 실행됩니다.
+    runs-on: ubuntu-latest
+    
+    # 작업이 수행할 단계들입니다.
+    steps:
+      # 첫 번째 단계: 'curl' 명령어를 사용해 코랩 URL을 호출(실행)합니다.
+      - name: Trigger Google Colab Notebook
+        # [!!! 가장 중요 !!!] 아래 URL을 "본인의 코랩 노트북 URL"로 반드시 교체해주세요.
+        run: curl "https://colab.research.google.com/github/Isabellaaaron/stock-report-automation/blob/main;/.ipynb"
